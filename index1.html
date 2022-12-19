@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPERHERO QUIZ</title>
+    <Link rel="stylesheet" href="./style1.css">
+</head>
+
+
+
+<body class="fullbg">
+    <div class="c1">
+        <h1>THE GEOGRAPHY QUIZ</h1>
+    </div>
+
+    <div class="c2">
+        <p class="question" id="question">
+            Q1. Which of these is not a continent?
+        </p>
+        <div class="option" id="option1out" onclick="selectoption(`1`)">
+            <div class="circle1"></div>
+            <p class="optionIn" id="option1">This is an option</p>
+        </div>
+        <div class="option" id="option2out" onclick="selectoption(`2`)">
+            <div class="circle1"></div>
+            <p class="optionIn" id="option2">This is an option</p>
+        </div>
+        <div class="option" id="option3out" onclick="selectoption(`3`)">
+            <div class="circle1"></div>
+            <p class="optionIn" id="option3">This is an option</p>
+        </div>
+        <div class="option" id="option4out" onclick="selectoption(`4`)">
+            <div class="circle1"></div>
+            <p class="optionIn" id="option4">This is an option</p>
+        </div>
+    </div>
+
+    <div class="c3">
+        <button class="btn" onclick="previousquestion()">Previous</button>
+        <button class="btn" onclick="quitquiz()">Quit</button>
+        <button class="btn" onclick="nextquestion()">Next</button>
+    </div>
+
+    <div class="scoreboard">
+        <p class="scoretext">Score:</p>
+        <p id="score">0/0</p>
+    </div>
+</body>
+
+<script>
+    // console.log(localStorage.getItem("quizType"));
+    // console.log(localStorage.getItem("questionNumber"));
+    // console.log(localStorage.getItem("score"));
+
+
+
+
+    const climatequestions = [
+        {
+            question: "Which region gets first monsoon in summer? ",
+            options: ["Himalayas", "Western Ghats", "Eastern ghats", "Gangetic Plains"],
+            answer: 1
+        },
+        {
+            question: "Economically, most important forests in india are?",
+            options: ["Tidal Forest", "Thorn Forest", "Evergreen Forest", "Tropical Deciduous forest"],
+            answer: 3
+        },
+        {
+            question: "Which of the following states recieve the highest rainfall during winter months?",
+            options: ["Punjab", "Kerela", "Meghalaya", "Tamil Nadu"],
+            answer: 3
+        },
+        {
+            question: "The north-eastern trade winds cause which of the following in India?",
+            options: ["Winter Rains in North Western India", "Winter Rains in Chennai", "Dust storm in Thar Desert", "Inclement conditions in the Indian Himalayas"],
+            answer: 1
+        }
+    ]
+
+    const biodiversityquestions = [
+        {
+            question: "Which of the following states of India became the first carbon free state?",
+            options: ["Gujarat", "Chattisgarh", "Bihar", "Himachal Pradesh"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is NOT an example of an in-situ conservation strategy?",
+            options: ["Biosphere Reserve", "Zoo", "National Park", "Sacred Groves"],
+            answer: 1
+        },
+        {
+            question: "In which year was Project Tiger launched?",
+            options: ["2004-05", "1983-84", "2013-14", "1973-74"],
+            answer: 3
+        }
+    ]
+
+
+    const quizType = localStorage.getItem("quizType");
+    const questionNumber = localStorage.getItem("questionNumber");
+    let score = localStorage.getItem("score");
+
+
+
+
+    const quitquiz = () => {
+        localStorage.clear();
+        window.location.href = "index.html";
+    }
+    const status = () => {
+        console.log("Quiztype is", quizType);
+        console.log("Question number is", questionNumber);
+        console.log("Score is", score);
+    }
+    const setquestion = () => {
+        if (quizType == "climate") {
+            status();
+            // console.log(document.getElementById("question").innerHTML);
+            document.getElementById("question").innerHTML = climatequestions[questionNumber - 1].question;
+            document.getElementById("option1").innerHTML = climatequestions[questionNumber - 1].options[0];
+            document.getElementById("option2").innerHTML = climatequestions[questionNumber - 1].options[1];
+            document.getElementById("option3").innerHTML = climatequestions[questionNumber - 1].options[2];
+            document.getElementById("option4").innerHTML = climatequestions[questionNumber - 1].options[3];
+
+            if (localStorage.getItem(`answer${questionNumber}`) != null) {
+                console.log("Answer is", localStorage.getItem(`answer${questionNumber}`));
+                selectedoption(localStorage.getItem(`answer${questionNumber}`));
+            }
+        }
+        else if (quizType == "biodiversity") {
+            status();
+            document.getElementById("question").innerHTML = biodiversityquestions[questionNumber - 1].question;
+            document.getElementById("option1").innerHTML = biodiversityquestions[questionNumber - 1].options[0];
+            document.getElementById("option2").innerHTML = biodiversityquestions[questionNumber - 1].options[1];
+            document.getElementById("option3").innerHTML = biodiversityquestions[questionNumber - 1].options[2];
+            document.getElementById("option4").innerHTML = biodiversityquestions[questionNumber - 1].options[3];
+
+
+            if (localStorage.getItem(`answer${questionNumber}`) != null) {
+                console.log("Answer is", localStorage.getItem(`answer${questionNumber}`));
+                selectedoption(localStorage.getItem(`answer${questionNumber}`));
+            }
+        }
+        else {
+            console.log("No quiz type selected");
+            window.location.href = "index.html";
+        }
+    }
+    const nextquestion = () => {
+        if (quizType == "climate") {
+            if (questionNumber < climatequestions.length) {
+                localStorage.setItem("questionNumber", parseInt(questionNumber) + 1);
+                window.location.href = "index1.html";
+                setquestion();
+            }
+            else {
+                // window.alert("Quiz Completed");
+                setscore();
+                localStorage.setItem("finalscore", `${score}/${climatequestions.length}`);
+                window.location.href = "score.html";
+            }
+        }
+        else if (quizType == "biodiversity") {
+            if (questionNumber < biodiversityquestions.length) {
+                localStorage.setItem("questionNumber", parseInt(questionNumber) + 1);
+                window.location.href = "index1.html";
+                setquestion();
+            }
+            else {
+                setscore();
+                localStorage.setItem("finalscore", `${score}/${biodiversityquestions.length}`);
+                window.location.href = "score.html";
+            }
+        }
+    }
+    const previousquestion = () => {
+        if (quizType == "climate") {
+            if (questionNumber > 1) {
+                localStorage.setItem("questionNumber", parseInt(questionNumber) - 1);
+                window.location.href = "index1.html";
+                setquestion();
+            }
+            else {
+                window.alert("Minimum Reached");
+            }
+        }
+        else if (quizType == "biodiversity") {
+            if (questionNumber > 1) {
+                localStorage.setItem("questionNumber", parseInt(questionNumber) - 1);
+                window.location.href = "index1.html";
+                setquestion();
+            }
+            else {
+                window.alert("Minimum Reached");
+            }
+        }
+    }
+    const selectoption = (optionnumber) => {
+        // console.log("Option selected is", optionnumber);
+        const optionvalue = document.getElementById("option" + optionnumber).innerHTML;
+        // console.log("Option value is", optionvalue)
+        if (localStorage.getItem(`answer${questionNumber}`) == null) {
+            if (quizType == "climate") {
+                if (optionvalue == climatequestions[questionNumber - 1].options[climatequestions[questionNumber - 1].answer]) {
+                    // window.alert("Correct");
+                    document.getElementById("option" + optionnumber + "out").classList.add("rightanswer");
+                    score++;
+                    localStorage.setItem("score", score);
+                    setscore();
+                }
+                else {
+                    document.getElementById("option" + optionnumber + "out").classList.add("wronganswer");
+                    
+                    // nextquestion();
+                }
+            }
+            else if (quizType == "biodiversity") {
+                if (optionvalue == biodiversityquestions[questionNumber - 1].options[biodiversityquestions[questionNumber - 1].answer]) {
+                    // window.alert("Correct");
+                    document.getElementById("option" + optionnumber + "out").classList.add("rightanswer");
+                    score++;
+                    localStorage.setItem("score",score);
+                    setscore();
+                }
+                else {
+                    document.getElementById("option" + optionnumber + "out").classList.add("wronganswer");
+                    // window.alert("Wrong");
+                    // nextquestion();
+                }
+            }
+            localStorage.setItem(`answer${questionNumber}`, optionnumber);
+        }
+    }
+    const selectedoption = (optionnumber) => {
+        console.log("Option selected is", optionnumber);
+        const optionvalue = document.getElementById("option" + optionnumber).innerHTML;
+        console.log("Option value is", optionvalue)
+        if (quizType == "climate") {
+            if (optionvalue == climatequestions[questionNumber - 1].options[climatequestions[questionNumber - 1].answer]) {
+                // window.alert("Correct");
+                document.getElementById("option" + optionnumber + "out").classList.add("rightanswer");
+            }
+            else {
+                document.getElementById("option" + optionnumber + "out").classList.add("wronganswer");
+                // nextquestion();
+            }
+        }
+        else if (quizType == "biodiversity") {
+            if (optionvalue == biodiversityquestions[questionNumber - 1].options[biodiversityquestions[questionNumber - 1].answer]) {
+                // window.alert("Correct");
+                document.getElementById("option" + optionnumber + "out").classList.add("rightanswer");
+            }
+            else {
+                document.getElementById("option" + optionnumber + "out").classList.add("wronganswer");
+                // window.alert("Wrong");
+                // nextquestion();
+            }
+        }
+    }
+    const setscore = () => {
+        if (quizType == "climate") {
+            document.getElementById("score").innerHTML = `${score}/${climatequestions.length}`;
+        }
+        else if (quizType == "biodiversity") {
+            document.getElementById("score").innerHTML = `${score}/${biodiversityquestions.length}`;
+        }
+    }
+    setquestion();
+    setscore();
+  
+</script>
+
+</html>
